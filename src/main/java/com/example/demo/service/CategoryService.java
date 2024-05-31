@@ -1,6 +1,10 @@
 package com.example.demo.service;
 
+import com.example.demo.model.Category;
+import java.util.List;
+
+
 public interface CategoryService {
-    String getAllCategories();
-    public String GetProductInCategory(Long categoryId);
+    List<Category> getAllCategories();
+    Category getProductInCategory(Long categoryId);
 }

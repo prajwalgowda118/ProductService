@@ -1,6 +1,7 @@
 package com.example.demo.controller;
 
 
+import com.example.demo.service.FakeStoreCategoryImp;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +16,11 @@ import org.springframework.web.bind.annotation.RestController;
 
 public class CatagoryController {
 
+    private FakeStoreCategoryImp FakeStoreCategoryImp;
+
+    public CatagoryController(FakeStoreCategoryImp fakeStoreCategoryImp) {
+        this.FakeStoreCategoryImp = fakeStoreCategoryImp;
+    }
 
     @GetMapping()
     public String getAllCategories() {
@@ -25,6 +31,7 @@ public class CatagoryController {
     public String GetProductInCategory(@PathVariable("categoryId") Long categoryId) {
 
         return "Single category";
+
 
     }
 

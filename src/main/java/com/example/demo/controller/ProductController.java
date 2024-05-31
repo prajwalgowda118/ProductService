@@ -2,6 +2,7 @@ package com.example.demo.controller;
 
 import com.example.demo.DTO.ProductDto;
 import com.example.demo.model.Product;
+import com.example.demo.service.ProductService;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,10 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/products")
 public class ProductController {
 
+    private ProductService productService;
+    public ProductController(ProductService productService) {
+        this.productService = productService;
+    }
     //get all product details
     @GetMapping()
     public String getAllProduct(){
@@ -33,7 +38,7 @@ public class ProductController {
     }
 
     @PutMapping("/{productId}")
-    public String updateProduct(@PathVariable("productId") Long productId) {
+    public String updateProduct(@PathVariable("productId") Long productId,ProductDto productDto) {
 
         return "Hello World, Created my first product with id " + productId;
     }
