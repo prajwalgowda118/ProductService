@@ -1,4 +1,6 @@
 package com.example.demo.service;
 
-public class CategoryService {
+public interface CategoryService {
+    String getAllCategories();
+    public String GetProductInCategory(Long categoryId);
 }
