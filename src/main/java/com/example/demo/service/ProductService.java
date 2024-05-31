@@ -1,5 +1,6 @@
 package com.example.demo.service;
 
+import com.example.demo.DTO.ProductDto;
 import com.example.demo.model.Product;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public interface ProductService {
 
      Product getSingleProduct( Long productId);
 
-     Product addProduct(Product product);
+     Product addProduct(ProductDto product);
      Product updateProduct( Long productId,Product product);
      Boolean deleteProduct( Long productId);
 

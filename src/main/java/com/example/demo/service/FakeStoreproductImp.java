@@ -38,27 +38,47 @@ public class FakeStoreproductImp implements ProductService
             RestTemplate restTemplate=restTemplateBuilder.build();
         ResponseEntity<ProductDto> response=
         restTemplate.getForEntity(
-                "https://fakestoreapi.com/products/",ProductDto.class,productId
+                "https://fakestoreapi.com/products/{productId}",ProductDto.class,productId
         );
+        if (response.getStatusCode().is2xxSuccessful()) {
+            ProductDto productDto = response.getBody();
+            Product product = new Product();
 
-        ProductDto productDto=response.getBody();
-        Product product=new Product();
+            product.setId(productDto.getId());
+            product.setTitle(productDto.getTitle());
+            product.setPrice(productDto.getPrice());
+            product.setDescription(productDto.getDescription());
+            Category category = new Category();
+            category.setCategoryName(productDto.getCategory());
+            product.setCategory(category);
+            product.setImageURl(productDto.getImage());
 
-        product.setId(productDto.getId());
-        product.setTitle(productDto.getTitle());
-        product.setPrice(productDto.getPrice());
-        product.setDescription(productDto.getDescription());
-        Category category=new Category();
-        category.setCategoryName(productDto.getCategory());
-        product.setCategory(category);
-        product.setImageURl(productDto.getImage());
-
-        return product;
-
+            return product;
+        }
+        return null;
     }
     @Override
-    public Product addProduct(Product product){
-        return null;
+    public Product addProduct(ProductDto product){
+        RestTemplate restTemplate=restTemplateBuilder.build();
+        ResponseEntity<ProductDto> response=
+                restTemplate.postForEntity(
+                        "https://fakestoreapi.com/products",product,ProductDto.class
+                );
+
+        ProductDto productDto=response.getBody();
+        Product product1 = new Product();
+
+        product1.setId(productDto.getId());
+        product1.setTitle(productDto.getTitle());
+        product1.setPrice(productDto.getPrice());
+        product1.setDescription(productDto.getDescription());
+        Category category = new Category();
+        category.setCategoryName(productDto.getCategory());
+        product1.setCategory(category);
+        product1.setImageURl(productDto.getImage());
+
+        return product1;
+
     }
 
     @Override

@@ -7,6 +7,11 @@ import lombok.Getter;
 import lombok.Setter;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
+//import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatus;
+
+
 
 @Getter
 @Setter
@@ -27,14 +32,26 @@ public class ProductController {
 
     //get all product details for single id
     @GetMapping("/{productId}")
-    public String getSingleProduct(@PathVariable("productId") Long productId) {
-        return "Hello World, Created my first product with id " + productId;
+    public ResponseEntity<Product> getSingleProduct(@PathVariable("productId") Long productId) {
+        Product product = productService.getSingleProduct(productId);
+        if (product != null) {
+            return ResponseEntity.ok(product);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @PostMapping()
-    public String addProduct(@RequestBody ProductDto productDto) {
-        return "Hello World, Created my first product with id 1"+productDto;
-        //return "";
+    public ResponseEntity<Product> addProduct(@RequestBody ProductDto product) {
+
+
+        // Call the service method to add the product
+        Product product1 = productService.addProduct(product);
+
+        // Create a ResponseEntity with the newly added product and HttpStatus.OK
+        ResponseEntity<Product> response = new ResponseEntity<>(product1, HttpStatus.OK);
+
+        return response;
     }
 
     @PutMapping("/{productId}")
