@@ -4,14 +4,12 @@ import com.example.demo.DTO.ProductDto;
 import com.example.demo.model.Product;
 import com.example.demo.service.ProductService;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.*;
 import org.springframework.http.ResponseEntity;
-//import org.springframework.http.HttpStatus;
+import lombok.Setter;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
-
-
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,18 +17,20 @@ import org.springframework.http.HttpStatus;
 @RequestMapping("/products")
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
+
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
-    //get all product details
-    @GetMapping()
-    public String getAllProduct(){
 
-        return "Hello World, Created my first prodcut";
+    // Get all product details
+    @GetMapping()
+    public ResponseEntity<List<Product>> getAllProduct() {
+        List<Product> products = productService.getAllProduct();
+        return new ResponseEntity<>(products, HttpStatus.OK);
     }
 
-    //get all product details for single id
+    // Get all product details for single id
     @GetMapping("/{productId}")
     public ResponseEntity<Product> getSingleProduct(@PathVariable("productId") Long productId) {
         Product product = productService.getSingleProduct(productId);
@@ -43,26 +43,23 @@ public class ProductController {
 
     @PostMapping()
     public ResponseEntity<Product> addProduct(@RequestBody ProductDto product) {
-
-
         // Call the service method to add the product
         Product product1 = productService.addProduct(product);
-
         // Create a ResponseEntity with the newly added product and HttpStatus.OK
-        ResponseEntity<Product> response = new ResponseEntity<>(product1, HttpStatus.OK);
-
-        return response;
+        return new ResponseEntity<>(product1, HttpStatus.OK);
     }
 
     @PutMapping("/{productId}")
-    public String updateProduct(@PathVariable("productId") Long productId,ProductDto productDto) {
-
-        return "Hello World, Created my first product with id " + productId;
+    public ResponseEntity<Product>  updateProduct(@PathVariable("productId") Long productId, @RequestBody ProductDto productDto) {
+        // Implement the update logic
+        Product product1 = productService.updateProduct(productId,productDto);
+        // Create a ResponseEntity with the newly added product and HttpStatus.OK
+        return new ResponseEntity<>(product1, HttpStatus.OK);
     }
 
     @DeleteMapping("/{productId}")
     public String deleteProduct(@PathVariable("productId") Long productId) {
-        return "Hello World, Created my first product with id " + productId;
+        // Implement the delete logic
+        return "Product with id " + productId + " deleted.";
     }
-
 }

@@ -9,8 +9,11 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.web.client.RestTemplate;
 import com.example.demo.DTO.ProductDto;
 import org.springframework.http.ResponseEntity;
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpMethod;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import org.springframework.web.client.RestTemplate;
 
@@ -29,8 +32,50 @@ public class FakeStoreproductImp implements ProductService
     }
     @Override
     public List<Product> getAllProduct(){
-        return null;
+        RestTemplate restTemplate = restTemplateBuilder.build();
+        ResponseEntity<ProductDto[]> responseEntity = restTemplate.getForEntity(
+                "https://fakestoreapi.com/products", ProductDto[].class);
 
+        ProductDto[] productDtos = responseEntity.getBody();
+        List<Product> products = new ArrayList<>();
+
+        if (productDtos != null) {
+            for (ProductDto productDto : productDtos) {
+                Product product = new Product();
+
+                product.setId(productDto.getId());
+                product.setTitle(productDto.getTitle());
+                product.setPrice(productDto.getPrice());
+                product.setDescription(productDto.getDescription());
+                Category category = new Category();
+                category.setCategoryName(productDto.getCategory());
+                product.setCategory(category);
+                product.setImageURl(productDto.getImage());
+
+                products.add(product);
+            }
+        }
+
+        return products;
+       /* for(Object object: l.getBody()){
+
+            ProductDto productDto = (ProductDto) l;
+            Product product = new Product();
+
+            product.setId(productDto.getId());
+            product.setTitle(productDto.getTitle());
+            product.setPrice(productDto.getPrice());
+            product.setDescription(productDto.getDescription());
+            Category category = new Category();
+            category.setCategoryName(productDto.getCategory());
+            product.setCategory(category);
+            product.setImageURl(productDto.getImage());
+
+            products.add(product);
+
+        }
+        return products;
+        */
     }
     @Override
     public Product getSingleProduct(Long productId){
@@ -82,7 +127,7 @@ public class FakeStoreproductImp implements ProductService
     }
 
     @Override
-    public Product updateProduct(Long id,Product product){
+    public Product updateProduct(Long id,ProductDto product){
         return null;
 
     }
