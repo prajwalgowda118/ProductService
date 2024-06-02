@@ -30,6 +30,21 @@ public class FakeStoreproductImp implements ProductService
         this.restTemplateBuilder = restTemplateBuilder;
 
     }
+    private Product convertProductDtoToProduct(ProductDto productDto) {
+
+        Product product = new Product();
+
+        product.setId(productDto.getId());
+        product.setTitle(productDto.getTitle());
+        product.setPrice(productDto.getPrice());
+        product.setDescription(productDto.getDescription());
+        Category category = new Category();
+        category.setCategoryName(productDto.getCategory());
+        product.setCategory(category);
+        product.setImageURl(productDto.getImage());
+
+        return product;
+    }
     @Override
     public List<Product> getAllProduct(){
         RestTemplate restTemplate = restTemplateBuilder.build();
@@ -41,41 +56,13 @@ public class FakeStoreproductImp implements ProductService
 
         if (productDtos != null) {
             for (ProductDto productDto : productDtos) {
-                Product product = new Product();
 
-                product.setId(productDto.getId());
-                product.setTitle(productDto.getTitle());
-                product.setPrice(productDto.getPrice());
-                product.setDescription(productDto.getDescription());
-                Category category = new Category();
-                category.setCategoryName(productDto.getCategory());
-                product.setCategory(category);
-                product.setImageURl(productDto.getImage());
-
-                products.add(product);
+                products.add(convertProductDtoToProduct(productDto));
             }
         }
 
         return products;
-       /* for(Object object: l.getBody()){
 
-            ProductDto productDto = (ProductDto) l;
-            Product product = new Product();
-
-            product.setId(productDto.getId());
-            product.setTitle(productDto.getTitle());
-            product.setPrice(productDto.getPrice());
-            product.setDescription(productDto.getDescription());
-            Category category = new Category();
-            category.setCategoryName(productDto.getCategory());
-            product.setCategory(category);
-            product.setImageURl(productDto.getImage());
-
-            products.add(product);
-
-        }
-        return products;
-        */
     }
     @Override
     public Product getSingleProduct(Long productId){
@@ -87,18 +74,9 @@ public class FakeStoreproductImp implements ProductService
         );
         if (response.getStatusCode().is2xxSuccessful()) {
             ProductDto productDto = response.getBody();
-            Product product = new Product();
 
-            product.setId(productDto.getId());
-            product.setTitle(productDto.getTitle());
-            product.setPrice(productDto.getPrice());
-            product.setDescription(productDto.getDescription());
-            Category category = new Category();
-            category.setCategoryName(productDto.getCategory());
-            product.setCategory(category);
-            product.setImageURl(productDto.getImage());
 
-            return product;
+            return convertProductDtoToProduct(productDto);
         }
         return null;
     }
@@ -111,18 +89,9 @@ public class FakeStoreproductImp implements ProductService
                 );
 
         ProductDto productDto=response.getBody();
-        Product product1 = new Product();
 
-        product1.setId(productDto.getId());
-        product1.setTitle(productDto.getTitle());
-        product1.setPrice(productDto.getPrice());
-        product1.setDescription(productDto.getDescription());
-        Category category = new Category();
-        category.setCategoryName(productDto.getCategory());
-        product1.setCategory(category);
-        product1.setImageURl(productDto.getImage());
 
-        return product1;
+        return convertProductDtoToProduct(productDto);
 
     }
 
